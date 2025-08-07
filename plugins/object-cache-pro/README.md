@@ -1,29 +1,36 @@
-# Object Cache Pro Plugin Directory
+# Object Cache Pro
 
-## Instructions:
+A **business class** Redis object cache backend for WordPress.
 
-1. **Download Object Cache Pro** from your account at https://objectcache.pro/
-2. **Extract the ZIP file** 
-3. **Copy all the plugin files** into this directory (`plugins/object-cache-pro/`)
-4. **Make sure the main plugin file** `object-cache-pro.php` is in this directory
-5. **Deploy the container** - the plugin will be automatically activated
+Truly reliable, highly optimized, fully customizable and with a _dedicated engineer_ when you most need it.
 
-## Expected Structure:
-```
-plugins/object-cache-pro/
-├── object-cache-pro.php          (main plugin file)
-├── stubs/
-│   └── object-cache.php          (drop-in file)
-├── src/
-├── composer.json
-└── (other plugin files...)
-```
+- Rewritten for raw performance
+- WordPress object cache API compliant
+- Easy debugging & logging
+- Fully unit tested (100% code coverage)
+- Secure connections with TLS
+- Seamless WP CLI & Debug Bar integration
+- Optimized for WooCommerce, Jetpack & Yoast SEO
 
-## Auto-Activation:
-- ✅ Plugin will be automatically copied from the plugins directory
-- ✅ Plugin will be automatically activated on container start
-- ✅ Drop-in will be automatically installed
-- ✅ Object cache will be automatically enabled
-- ✅ Works for both new and existing WordPress installations
+## Installation
 
-The activation script will handle everything automatically once you place the plugin files in this directory.
+See the [installation instructions](https://objectcache.pro/docs/installation/).
+
+## Documentation
+
+You’ll find the documentation on [objectcache.pro/docs](https://objectcache.pro/docs/).
+
+## Known Issues
+
+- https://core.trac.wordpress.org/ticket/31245
+- https://github.com/woocommerce/woocommerce/pull/24961
+- https://github.com/woocommerce/woocommerce/pull/27696
+
+### Query caching
+
+- https://make.wordpress.org/core/2022/10/07/improvements-to-wp_query-performance-in-6-1/
+
+### Query splitting
+
+- https://core.trac.wordpress.org/changeset/56513
+- https://github.com/wpmetabox/mb-relationships/commit/06aa11e0d99be5663622c06eb39b0de9b0817bd9
