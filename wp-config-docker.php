@@ -151,7 +151,7 @@ if (getenv_docker('WORDPRESS_REDIS_ENABLED', false)) {
         // Connection settings (Docker-optimized)
         'host' => getenv_docker('WORDPRESS_REDIS_HOST', 'redis'), // Use service name, not 127.0.0.1
         'port' => getenv_docker('WORDPRESS_REDIS_PORT', 6379),
-        'database' => getenv_docker('WORDPRESS_REDIS_DATABASE', 1), // Default to database 1
+        'database' => getenv_docker('WORDPRESS_REDIS_DATABASE', 0), // Default to database 0
         'password' => getenv_docker('WORDPRESS_REDIS_PASSWORD', null),
         
         // Performance settings
