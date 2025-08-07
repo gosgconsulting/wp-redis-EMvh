@@ -4,7 +4,7 @@ services:
   wp:
     build: .
     ports:
-      - ${WORDPRESS_PORT}:80
+      - 8080:80
     volumes:
       - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
       - ./wp-app:/var/www/html
@@ -53,7 +53,7 @@ services:
       PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
     ports:
-      - ${PHPMYADMIN_PORT}:80
+      - 8081:80
     links:
       - db:db
     restart: always

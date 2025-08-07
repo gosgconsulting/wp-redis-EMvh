@@ -113,7 +113,9 @@ $table_prefix = getenv_docker('WORDPRESS_TABLE_PREFIX', 'wp_');
  *
  * @link https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
  */
-define( 'WP_DEBUG', !!getenv_docker('WORDPRESS_DEBUG', '') );
+define( 'WP_DEBUG', true );
+define( 'WP_DEBUG_LOG', true );
+define( 'WP_DEBUG_DISPLAY', false );
 
 /* Add any custom values between this line and the "stop editing" line. */
 
@@ -176,8 +178,8 @@ if (getenv_docker('WORDPRESS_REDIS_ENABLED', false)) {
         'save_commands' => false,
     ]);
     
-    // Global Redis disable switch (your preferred syntax)
-    define('WP_REDIS_DISABLED', getenv_docker('WP_REDIS_DISABLED', false));
+    // Global Redis disable switch - temporarily disabled to fix critical error
+    define('WP_REDIS_DISABLED', true);
     
 
 }
