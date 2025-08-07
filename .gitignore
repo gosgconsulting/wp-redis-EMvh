@@ -1,0 +1,48 @@
+# WordPress core files
+wp-admin/
+wp-includes/
+xmlrpc.php
+index.php
+license.txt
+readme.html
+
+# Ignore uploads and sensitive files only
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/cache/
+wp-content/backups/
+
+wp-config-sample.php
+
+# Configuration files
+wp-config.php
+
+# Log files
+*.log
+
+# Database files
+*.sql
+*.sqlite
+
+# Environment files
+.env
+.env.*
+
+# Docker volumes
+db_data/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db 

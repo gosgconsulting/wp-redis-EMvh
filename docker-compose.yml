@@ -1,0 +1,90 @@
+version: '3'
+
+services:
+  wp:
+    build: .
+    ports:
+      - ${WORDPRESS_PORT}:80
+    volumes:
+      - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
+      - ./wp-app:/var/www/html
+      - ./themes:/var/www/html/wp-content/themes
+      - ./plugins:/var/www/html/plugins
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: "${DB_NAME}"
+      WORDPRESS_DB_USER: "${DB_USER}"
+      WORDPRESS_DB_PASSWORD: "${DB_PASSWORD}"
+      WORDPRESS_TABLE_PREFIX: "${WORDPRESS_TABLE_PREFIX}"
+      WORDPRESS_URL: "${WORDPRESS_URL}"
+      WORDPRESS_TITLE: "${WORDPRESS_TITLE}"
+      WORDPRESS_ADMIN_USER: "${WORDPRESS_ADMIN_USER}"
+      WORDPRESS_ADMIN_PASSWORD: "${WORDPRESS_ADMIN_PASSWORD}"
+      WORDPRESS_ADMIN_EMAIL: "${WORDPRESS_ADMIN_EMAIL}"
+      WORDPRESS_REDIS_ENABLED: "true"
+      WORDPRESS_REDIS_HOST: redis
+      WORDPRESS_REDIS_PORT: 6379
+    depends_on:
+      - db
+    links:
+      - db
+    restart: always
+
+  wpcli:
+    image: wordpress:cli
+    volumes:
+      - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
+      - ./wp-app:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: "${DB_NAME}"
+      WORDPRESS_DB_USER: "${DB_USER}"
+      WORDPRESS_DB_PASSWORD: "${DB_PASSWORD}"
+      WORDPRESS_TABLE_PREFIX: "${WORDPRESS_TABLE_PREFIX}"
+    depends_on:
+      - db
+      - wp
+
+  pma:
+    image: phpmyadmin/phpmyadmin # CHANGE THIS TO arm64v8/phpmyadmin on ARM
+    environment:
+      # https://docs.phpmyadmin.net/en/latest/setup.html#docker-environment-variables
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+    ports:
+      - ${PHPMYADMIN_PORT}:80
+    links:
+      - db:db
+    restart: always
+
+  db:
+    image: mariadb:latest # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
+    command: [
+        '--default_authentication_plugin=mysql_native_password',
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci'
+    ]
+    volumes:
+      - ./wp-data:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+    restart: always
+
+  redis:
+    restart: always
+    image: redis:latest
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    command: tunnel --no-autoupdate run --token eyJhIjoiODQxZDJlMDEzOTI2M2MyYmJjMzcxNTNhOWM2MmJhM2IiLCJ0IjoiZDQ0ZTBkNjgtZTExYy00OWYzLWEyOTQtNzRjNTY0ZWZlNjI4IiwicyI6Ik16QmhNREpoTldRdFlUbGxZeTAwWmpKbExUazJNRFF0TmpBNU5qbGhZV0l4Tm1SaCJ9
+    depends_on:
+      - wp
+
+volumes:
+  db_data:
