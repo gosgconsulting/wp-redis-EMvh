@@ -1,0 +1,58 @@
+# WordPress Critical Error Debugging Steps
+
+## Identified Issues
+- WordPress site is showing a critical error after migration
+- Database connection may be failing
+- Redis cache configuration might need verification
+- Potential plugin conflicts from migration
+
+## Next Steps
+
+### 1. Enable WordPress Debug Mode
+Add these lines to wp-config.php to get detailed error messages:
+```php
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);
+define('WP_DEBUG_DISPLAY', false);
+```
+
+### 2. Update Database Credentials
+Verify and update database credentials in wp-config.php:
+```php
+define('DB_NAME', 'railway');
+define('DB_USER', 'railway');
+define('DB_PASSWORD', 's6UafzTBqnc5TMVRvDlqnFq-rCUZ5!yP');
+define('DB_HOST', 'mariadb-one-bf16-production.up.railway.app:3366');
+```
+
+### 3. Repair Database
+Add this line to wp-config.php:
+```php
+define('WP_ALLOW_REPAIR', true);
+```
+Then visit: https://wp-redis-5uye-production.up.railway.app/wp-admin/maint/repair.php
+
+### 4. Check Redis Configuration
+Verify Redis settings in wp-config.php:
+```php
+define('WP_REDIS_CONFIG', [
+    'host' => 'redis',
+    'port' => 6379,
+    'database' => 0,
+    'timeout' => 1,
+    'read_timeout' => 1,
+]);
+```
+
+### 5. Disable Plugins Temporarily
+Rename the plugins directory or access via FTP and rename to "plugins_old"
+
+### 6. Check Error Logs
+Look for error logs in:
+- wp-content/debug.log
+- Server error logs
+
+### 7. Verify File Permissions
+Ensure proper file permissions:
+- Directories: 755
+- Files: 644
